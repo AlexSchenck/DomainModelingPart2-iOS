@@ -21,6 +21,15 @@ protocol Mathematics
     mutating func subtract(otherMoney : Money)
 }
 
+// Extends double to be able to convert to Money type
+extension Double
+{
+    var USD : Money { return Money(amount: self, curr: Currency.USD) }
+    var GBP : Money { return Money(amount: self, curr: Currency.GBP) }
+    var EUR : Money { return Money(amount: self, curr: Currency.EUR) }
+    var CAN : Money { return Money(amount: self, curr: Currency.CAN) }
+}
+
 // Currency enumeration, double values represent relative conversion rates
 enum Currency : Double
 {
@@ -93,6 +102,11 @@ var money2 = Money(amount: 10, curr: Currency.CAN);
 var money3 = Money(amount: 5, curr: Currency.GBP);
 var money4 = Money(amount: 12, curr: Currency.EUR);
 
+var double1 : Double = 5
+var double2 : Double = 15
+var double3 : Double = 40
+var double4 : Double = 55.55
+
 println("Money test cases")
 println(money1.convert(Currency.EUR))
 println(money2.convert(Currency.GBP))
@@ -106,6 +120,10 @@ println(money1.description)
 println(money2.description)
 println(money3.description)
 println(money4.description)
+println(double1.USD.description)
+println(double2.CAN.description)
+println(double3.GBP.description)
+println(double4.EUR.description)
 
 money1.add(money2)
 println(money1.description)
@@ -114,7 +132,7 @@ money4.subtract(money1)
 println(money4.description)
 
 money2.add(money3)
-println(money2)
+println(money2.description)
 
 class Job : CustomStringConvertible
 {
