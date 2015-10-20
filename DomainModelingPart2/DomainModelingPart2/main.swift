@@ -14,7 +14,12 @@ protocol CustomStringConvertible
     var description : String { get }
 }
 
-
+// Defines a necessity for two mutating Money methods, add and subtract
+protocol Mathematics
+{
+    mutating func add(otherMoney : Money)
+    mutating func subtract(otherMoney : Money)
+}
 
 // Currency enumeration, double values represent relative conversion rates
 enum Currency : Double
@@ -25,7 +30,7 @@ enum Currency : Double
     case CAN = 2.5
 }
 
-struct Money : CustomStringConvertible
+struct Money : CustomStringConvertible, Mathematics
 {
     var amount : Double
     var currency: Currency
@@ -57,7 +62,7 @@ struct Money : CustomStringConvertible
         return (self.currency.rawValue / toCurr.rawValue) * self.amount
     }
     
-    // Conducts given math Operation and returns result in this Money's currency
+    // Conducts given math Operation and returns result in this Money's currency -- non mutating
     func mathOperation(op: String, otherMoney : Money) -> Double
     {
         switch op {
@@ -69,6 +74,16 @@ struct Money : CustomStringConvertible
             println("Not a vaild operation")
             return 0
         }
+    }
+    
+    // Adds given money to this money
+    mutating func add(otherMoney: Money) {
+        self.amount += otherMoney.convert(self.currency)
+    }
+    
+    // Subtracts given money from this money
+    mutating func subtract(otherMoney: Money) {
+        self.amount -= otherMoney.convert(self.currency)
     }
 }
 
@@ -91,6 +106,15 @@ println(money1.description)
 println(money2.description)
 println(money3.description)
 println(money4.description)
+
+money1.add(money2)
+println(money1.description)
+
+money4.subtract(money1)
+println(money4.description)
+
+money2.add(money3)
+println(money2)
 
 class Job : CustomStringConvertible
 {
